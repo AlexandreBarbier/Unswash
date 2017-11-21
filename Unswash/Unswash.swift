@@ -17,10 +17,12 @@ open class Unswash: NSObject {
     
     public static let client = Unswash()
     var client_id: String!
+    var client_name: String!
     private override init(){}
 
-    open func configure(clientId: String) {
+    open func configure(clientId: String, clientName: String) {
         client_id = clientId
+        client_name = clientName
     }
 
     public struct Photos {

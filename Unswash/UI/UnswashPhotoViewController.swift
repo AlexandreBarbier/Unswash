@@ -80,7 +80,9 @@ open class UnswashPhotoViewController: UIViewController {
     }
 
     @IBAction func UnsplashTouch(_ sender: Any) {
-       let sfVC =  SFSafariViewController(url: URL(string: "https://unsplash.com")!)
+        var url = "https://unsplash.com"
+            url += "?utm_source=\(Unswash.client.client_name!)&utm_medium=referral&utm_campaign=api-credit"
+        let sfVC =  SFSafariViewController(url: URL(string: url)!)
         present(sfVC, animated: true, completion: nil)
     }
 }
@@ -175,7 +177,9 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
 extension UnswashPhotoViewController: ImageCollectionViewCellDelegate {
     func authorSelected(index: Int) {
         let user = dataSource[index].user!
-        let sfvc = SFSafariViewController(url: URL(string: user.links!.html!)!)
+        var url = "\(user.links!.html!)"
+        url += "?utm_source=\(Unswash.client.client_name!)&utm_medium=referral&utm_campaign=api-credit"
+        let sfvc = SFSafariViewController(url: URL(string: url)!)
         present(sfvc, animated: true, completion: nil)
     }
 }
