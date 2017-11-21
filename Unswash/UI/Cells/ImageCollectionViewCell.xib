@@ -28,6 +28,7 @@
                             <constraint firstAttribute="height" constant="30" id="QwK-yl-N5N"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="kaC-xn-B6v"/>
                         </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <state key="normal" title="Button">
                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
