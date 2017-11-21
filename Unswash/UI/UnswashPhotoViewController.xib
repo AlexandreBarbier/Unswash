@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UnswashPhotoViewController" customModule="Unswash" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="zwy-Ip-Vgw" id="Z15-r4-xBh"/>
+                <outlet property="searchBar" destination="AnB-b8-Uuu" id="B7j-Kx-dJ3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="none" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zwy-Ip-Vgw">
+                    <rect key="frame" x="0.0" y="56" width="375" height="611"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eBX-wx-GPY">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="aZ8-rG-dJZ"/>
+                        <outlet property="delegate" destination="-1" id="0vV-IH-m88"/>
+                    </connections>
+                </collectionView>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" text="" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnB-b8-Uuu">
+                    <rect key="frame" x="10" y="56" width="355" height="56"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <offsetWrapper key="searchFieldBackgroundPositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Swy-bt-cRk"/>
+                    </connections>
+                </searchBar>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Es9-UN-ViX">
+                    <rect key="frame" x="16" y="24" width="39" height="30"/>
+                    <state key="normal" title="Close"/>
+                    <connections>
+                        <action selector="closeTouch:" destination="-1" eventType="touchUpInside" id="BkM-86-jgr"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="AnB-b8-Uuu" secondAttribute="trailing" constant="10" id="1nG-hp-QdH"/>
+                <constraint firstItem="AnB-b8-Uuu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="7di-cd-RVd"/>
+                <constraint firstItem="Es9-UN-ViX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="24" id="8tH-U0-Xhv"/>
+                <constraint firstItem="AnB-b8-Uuu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="56" id="Tl1-os-GEb"/>
+                <constraint firstItem="zwy-Ip-Vgw" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="YNc-5H-Cn9"/>
+                <constraint firstItem="zwy-Ip-Vgw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gkL-Pq-hrF"/>
+                <constraint firstItem="zwy-Ip-Vgw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="56" id="hj3-sq-wBm"/>
+                <constraint firstItem="zwy-Ip-Vgw" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="lTl-ho-Rdm"/>
+                <constraint firstItem="Es9-UN-ViX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="yZn-Rz-QKZ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+</document>
