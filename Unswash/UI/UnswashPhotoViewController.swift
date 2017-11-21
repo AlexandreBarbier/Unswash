@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SafariServices
+
 private let minSpace: CGFloat = 16
 
 open class UnswashPhotoViewController: UIViewController {
@@ -20,6 +22,7 @@ open class UnswashPhotoViewController: UIViewController {
     private var isFetching = false
     private var completion:((UIImage, String?) -> Void)?
     private var imageQuality: UnswashImageQuality = .regular
+
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -36,19 +39,28 @@ open class UnswashPhotoViewController: UIViewController {
     private func requestPhotos() {
         let currentPage = Int(dataSource.count / 20) + 1
         isFetching = true
-        print(currentPage)
-        Unswash.Photos.get(page: currentPage, per_page: 20) { (photos) in
-            self.dataSource.append(contentsOf:photos)
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-                self.isFetching = false
+        if let searchText = searchBar.text, searchText != "" {
+            Unswash.Photos.search(query: searchText, page: currentPage, per_page: 20, completion: { (photos) in
+                self.dataSource = photos
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    self.isFetching = false
+                }
+            })
+        }
+        else {
+            Unswash.Photos.get(page: currentPage, per_page: 20) { (photos) in
+                self.dataSource.append(contentsOf:photos)
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    self.isFetching = false
+                }
             }
         }
     }
 
     override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     open class func picker() -> UnswashPhotoViewController {
@@ -66,19 +78,19 @@ open class UnswashPhotoViewController: UIViewController {
     @IBAction func closeTouch(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+
+    @IBAction func UnsplashTouch(_ sender: Any) {
+       let sfVC =  SFSafariViewController(url: URL(string: "https://unsplash.com")!)
+        present(sfVC, animated: true, completion: nil)
+    }
 }
 
 extension UnswashPhotoViewController: UISearchBarDelegate {
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count > 3 {
-            Unswash.Photos.search(query: searchText, completion: { (photos) in
-                self.dataSource = photos
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            })
-        }
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        dataSource = []
+        requestPhotos()
     }
+
 }
 
 extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -87,7 +99,7 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellSize = (self.view.frame.size.width - (3 * minSpace)) / 2
-        return CGSize(width: cellSize, height: cellSize)
+        return CGSize(width: cellSize, height: cellSize + 30)
     }
 
     public func collectionView(_ collectionView: UICollectionView,
@@ -123,7 +135,9 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if dataSource.count < 100 && !isFetching, let lastVisibleCell = collectionView.visibleCells.last, let index = collectionView.indexPath(for: lastVisibleCell), index.row > dataSource.count - 10 {
+        if dataSource.count < 100 && !isFetching,
+            let lastVisibleCell = collectionView.visibleCells.last,
+            let index = collectionView.indexPath(for: lastVisibleCell), index.row > dataSource.count - 10 {
             requestPhotos()
         }
     }
@@ -134,6 +148,9 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
                                                       for: indexPath) as! ImageCollectionViewCell
         let photo = self.dataSource[indexPath.row]
         let url = photo.getURLForQuality(quality: imageQuality)
+        cell.authorButton.setTitle(photo.user!.name, for: .normal)
+        cell.index =  indexPath.row
+        cell.delegate = self
         if cell.dataTask != nil {
             cell.dataTask.cancel()
         }
@@ -152,5 +169,13 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
         }
         cell.imageView.image = imageList[url]
         return cell
+    }
+}
+
+extension UnswashPhotoViewController: ImageCollectionViewCellDelegate {
+    func authorSelected(index: Int) {
+        let user = dataSource[index].user!
+        let sfvc = SFSafariViewController(url: URL(string: user.links!.html!)!)
+        present(sfvc, animated: true, completion: nil)
     }
 }

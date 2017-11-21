@@ -18,6 +18,7 @@
 		8D95C52D1FC313CF009C5FA1 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D95C5261FC313CF009C5FA1 /* Collection.swift */; };
 		8D95C52E1FC313CF009C5FA1 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D95C5271FC313CF009C5FA1 /* Photo.swift */; };
 		8D95C5301FC3140E009C5FA1 /* Unswash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D95C52F1FC3140E009C5FA1 /* Unswash.swift */; };
+		8DA063BA1FC43FF900F3CBA6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA063B91FC43FF900F3CBA6 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		8D95C5261FC313CF009C5FA1 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		8D95C5271FC313CF009C5FA1 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		8D95C52F1FC3140E009C5FA1 /* Unswash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unswash.swift; sourceTree = "<group>"; };
+		8DA063B91FC43FF900F3CBA6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			children = (
 				8D95C5261FC313CF009C5FA1 /* Collection.swift */,
 				8D95C5271FC313CF009C5FA1 /* Photo.swift */,
+				8DA063B91FC43FF900F3CBA6 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				8D95C5301FC3140E009C5FA1 /* Unswash.swift in Sources */,
 				8D95C52D1FC313CF009C5FA1 /* Collection.swift in Sources */,
 				8D95C52E1FC313CF009C5FA1 /* Photo.swift in Sources */,
+				8DA063BA1FC43FF900F3CBA6 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +411,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Unswash/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.abarbier.Unswash;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -428,6 +433,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Unswash/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.abarbier.Unswash;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";

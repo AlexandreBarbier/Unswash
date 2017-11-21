@@ -12,7 +12,7 @@ public enum UnswashImageQuality: String {
     case full, small, thumb, regular, raw
 }
 
-struct urls: Codable {
+struct PhotoUrls: Codable {
     var full: String
     var small: String
     var thumb: String
@@ -20,7 +20,7 @@ struct urls: Codable {
     var raw: String
 }
 
-struct links:Codable {
+struct PhotoLinks:Codable {
     var download_location: String
     var html: String
     var download: String
@@ -28,8 +28,10 @@ struct links:Codable {
 
 class Photo: Codable {
     var id: String?
-    var urls: urls?
-    var links: links?
+    var urls: PhotoUrls?
+    var links: PhotoLinks?
+    var user: User?
+    
     class SearchResult: Codable {
         var results: [Photo]?
     }

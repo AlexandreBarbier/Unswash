@@ -23,7 +23,6 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        authorButton.isHidden = true
     }
 
     @IBAction func authorTouch(_ sender: Any) {
