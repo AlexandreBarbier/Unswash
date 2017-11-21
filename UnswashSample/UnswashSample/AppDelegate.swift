@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        Unswash.client.configure(clientId: "53b91d6d89937ffe63877e750ae065257f25cef12d327845f19bd2bb16e22e02")
+        Unswash.client.configure(clientId: "YOUR_APP_ID")
         return true
     }
 
