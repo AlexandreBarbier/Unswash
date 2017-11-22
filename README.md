@@ -20,10 +20,10 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
-After this step you can use the UI we created for you 
+#### Show Picker
+After this step you can use the UI we created for you which look like this :
 ![](/assets/IMG_2498.PNG)
 
-#### Show Picker
 ```swift
 UnswashPhotoViewController.picker().present(in: self, quality: .regular) { image, url in
   DispatchQueue.main.async {
@@ -31,4 +31,13 @@ UnswashPhotoViewController.picker().present(in: self, quality: .regular) { image
   }
 }
 ```
+
+#### Direct call to the API
+
+```swift
+Unswash.client.Photos.search(query: String, page: Int = 1, per_page: Int = 10, completion: @escaping ([Photo]) -> Void)
+
+Unswash.client.Photos.get(page: Int = 1, per_page: Int = 10, order_by: Order = Order.latest, completion: @escaping ([Photo]) -> Void)
+```
+
 
