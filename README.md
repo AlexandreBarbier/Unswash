@@ -21,7 +21,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 ```
 
 After this step you can use the UI we created for you 
-
+![](/assets/IMG_2498.PNG)
 
 #### Show Picker
 ```swift
