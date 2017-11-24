@@ -40,8 +40,11 @@ open class UnswashPhotoViewController: UIViewController {
         let currentPage = Int(dataSource.count / 20) + 1
         isFetching = true
         if let searchText = searchBar.text, searchText != "" {
-            Unswash.Photos.search(query: searchText, page: currentPage, per_page: 20, completion: { (photos) in
-                self.dataSource = photos
+            Unswash.Photos.search(query: searchText, page: currentPage, per_page: 20, completion: { (photos, errors) in
+                guard errors == nil else {
+                    return
+                }
+                self.dataSource.append(contentsOf: photos)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     self.isFetching = false
@@ -49,7 +52,10 @@ open class UnswashPhotoViewController: UIViewController {
             })
         }
         else {
-            Unswash.Photos.get(page: currentPage, per_page: 20) { (photos) in
+            Unswash.Photos.get(page: currentPage, per_page: 20) { (photos, errors) in
+                guard errors == nil else {
+                    return
+                }
                 self.dataSource.append(contentsOf:photos)
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
