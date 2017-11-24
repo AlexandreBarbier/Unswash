@@ -7,13 +7,14 @@
 //
 
 import XCTest
+
 @testable import Unswash
 
 class UnswashTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        Unswash.client.configure(clientId: "53b91d6d89937ffe63877e750ae065257f25cef12d327845f19bd2bb16e22e02")
+        Unswash.client.configure(clientId: "7189bfa9903c05772dd3bcb58e660f24c0f46e12b828d1807a3c6a3ccea15ce8", clientName: "UswashTest")
     }
     
     override func tearDown() {
@@ -23,7 +24,7 @@ class UnswashTests: XCTestCase {
     
     func testExample() {
         let expect = expectation(description:"")
-        Unsplash.Photos.get(page: 1, per_page: 20, order_by: .latest, completion: { photos in
+        Unswash.Photos.get(page: 1, per_page: 20, order_by: .latest, completion: { (photos, errors) in
             XCTAssert(photos.count == 20)
             expect.fulfill()
         })
