@@ -1,3 +1,5 @@
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=5a17f7809bbf2800010a8074&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/5a17f7809bbf2800010a8074/build/latest?branch=master)
+
 # Unswash
 #### LightWeight library for [Unsplash](https://unsplash.com) api
 
