@@ -22,7 +22,7 @@ class UnswashTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testGetPhoto() {
         let expect = expectation(description:"")
         Unswash.Photos.get(page: 1, per_page: 20, order_by: .latest, completion: { (photos, errors) in
             XCTAssert(photos.count == 20)
@@ -34,7 +34,38 @@ class UnswashTests: XCTestCase {
             }
         }
     }
-    
+
+    func testSearchPhoto() {
+        let expect = expectation(description:"")
+        Unswash.Photos.search(query: "test", page: 0, per_page: 20) { (photos, errors) in
+            XCTAssert(photos.count == 20)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout:5.0) { (error) in
+            if error != nil {
+                XCTFail(error!.localizedDescription)
+            }
+        }
+    }
+
+    func testPhotoQuality() {
+        let expect = expectation(description:"")
+        Unswash.Photos.getPhoto(id: "LBI7cgq3pbM") { (photo, error) in
+            guard let photo = photo, error == nil else {
+                XCTFail(error?.errors?.first ?? "")
+                return
+            }
+            XCTAssert(photo.id == "LBI7cgq3pbM")
+            expect.fulfill()
+        }
+        waitForExpectations(timeout:5.0) { (error) in
+            if error != nil {
+                XCTFail(error!.localizedDescription)
+            }
+        }
+    }
+
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
