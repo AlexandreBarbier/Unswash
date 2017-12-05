@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="2304" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="none" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zwy-Ip-Vgw">
-                    <rect key="frame" x="0.0" y="56" width="375" height="611"/>
+                    <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eBX-wx-GPY">
                         <size key="itemSize" width="50" height="50"/>
@@ -36,25 +36,15 @@
                         <outlet property="delegate" destination="-1" id="0vV-IH-m88"/>
                     </connections>
                 </collectionView>
-                <searchBar contentMode="redraw" searchBarStyle="minimal" text="" showsSearchResultsButton="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnB-b8-Uuu">
-                    <rect key="frame" x="10" y="56" width="355" height="56"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <offsetWrapper key="searchFieldBackgroundPositionAdjustment" horizontal="0.0" vertical="0.0"/>
-                    <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="Swy-bt-cRk"/>
-                    </connections>
-                </searchBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Es9-UN-ViX">
-                    <rect key="frame" x="16" y="24" width="39" height="30"/>
+                    <rect key="frame" x="16" y="42" width="39" height="30"/>
                     <state key="normal" title="Close"/>
                     <connections>
                         <action selector="closeTouch:" destination="-1" eventType="touchUpInside" id="BkM-86-jgr"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLu-Ub-SS0">
-                    <rect key="frame" x="142" y="19.5" width="90" height="39"/>
+                    <rect key="frame" x="142" y="37.5" width="90" height="39"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <state key="normal" title="Unsplash">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -63,19 +53,29 @@
                         <action selector="UnsplashTouch:" destination="-1" eventType="touchUpInside" id="FUU-m6-k09"/>
                     </connections>
                 </button>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" text="" showsSearchResultsButton="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnB-b8-Uuu">
+                    <rect key="frame" x="10" y="90" width="355" height="56"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <offsetWrapper key="searchFieldBackgroundPositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Swy-bt-cRk"/>
+                    </connections>
+                </searchBar>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="AnB-b8-Uuu" secondAttribute="trailing" constant="10" id="1nG-hp-QdH"/>
                 <constraint firstItem="AnB-b8-Uuu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="7di-cd-RVd"/>
-                <constraint firstItem="Es9-UN-ViX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="24" id="8tH-U0-Xhv"/>
-                <constraint firstItem="AnB-b8-Uuu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="56" id="Tl1-os-GEb"/>
+                <constraint firstItem="AnB-b8-Uuu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="70" id="JYF-cW-Mg7"/>
                 <constraint firstItem="mLu-Ub-SS0" firstAttribute="centerY" secondItem="Es9-UN-ViX" secondAttribute="centerY" id="XBm-uC-zSh"/>
                 <constraint firstItem="zwy-Ip-Vgw" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="YNc-5H-Cn9"/>
                 <constraint firstItem="mLu-Ub-SS0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="dLD-Jx-zov"/>
                 <constraint firstItem="zwy-Ip-Vgw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gkL-Pq-hrF"/>
-                <constraint firstItem="zwy-Ip-Vgw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="56" id="hj3-sq-wBm"/>
+                <constraint firstItem="zwy-Ip-Vgw" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="70" id="hS5-Kj-oq7"/>
                 <constraint firstItem="zwy-Ip-Vgw" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="lTl-ho-Rdm"/>
+                <constraint firstItem="Es9-UN-ViX" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="22" id="oSr-Bn-jRF"/>
                 <constraint firstItem="Es9-UN-ViX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="yZn-Rz-QKZ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

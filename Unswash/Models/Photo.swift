@@ -36,7 +36,6 @@ class Photo: Codable {
         var results: [Photo]?
     }
 
-
     func getURLForQuality(quality: UnswashImageQuality) -> String {
         var url = ""
         switch quality {
@@ -59,6 +58,3 @@ class Photo: Codable {
         return url
     }
 }
-
-
-

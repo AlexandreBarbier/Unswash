@@ -21,7 +21,7 @@ class UnswashTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testGetPhoto() {
         let expect = expectation(description:"")
         Unswash.Photos.get(page: 1, per_page: 20, order_by: .latest, completion: { (photos, errors) in
@@ -39,6 +39,19 @@ class UnswashTests: XCTestCase {
         let expect = expectation(description:"")
         Unswash.Photos.search(query: "test", page: 0, per_page: 20) { (photos, errors) in
             XCTAssert(photos.count == 20)
+            expect.fulfill()
+        }
+        waitForExpectations(timeout:5.0) { (error) in
+            if error != nil {
+                XCTFail(error!.localizedDescription)
+            }
+        }
+    }
+
+    func testSearchPhotoError() {
+        let expect = expectation(description:"")
+        Unswash.Photos.search(query: "test", page: 10, per_page: 20) { (photos, errors) in
+            XCTAssert(errors?.errors?.count == 1)
             expect.fulfill()
         }
         waitForExpectations(timeout:5.0) { (error) in
