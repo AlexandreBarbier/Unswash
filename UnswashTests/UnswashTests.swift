@@ -48,18 +48,18 @@ class UnswashTests: XCTestCase {
         }
     }
 
-    func testSearchPhotoError() {
-        let expect = expectation(description:"")
-        Unswash.Photos.search(query: "test", page: 10, per_page: 20) { (photos, errors) in
-            XCTAssert(errors?.errors?.count == 1)
-            expect.fulfill()
-        }
-        waitForExpectations(timeout:5.0) { (error) in
-            if error != nil {
-                XCTFail(error!.localizedDescription)
-            }
-        }
-    }
+//    func testSearchPhotoError() {
+//        let expect = expectation(description:"")
+//        Unswash.Photos.search(query: "test", page: 10, per_page: 20) { (photos, errors) in
+//            XCTAssert(errors?.errors?.count == 1)
+//            expect.fulfill()
+//        }
+//        waitForExpectations(timeout:5.0) { (error) in
+//            if error != nil {
+//                XCTFail(error!.localizedDescription)
+//            }
+//        }
+//    }
 
     func testPhotoQuality() {
         let expect = expectation(description:"")
