@@ -29,9 +29,7 @@ extension Unswash {
                         err.errors = [dataString!]
                         completion([], err)
                     }
-
                 }
-
             }
         }
 
