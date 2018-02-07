@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "Unswash"
-  s.version      = "0.0.6"
+  s.version      = "0.0.8"
   s.summary      = "LightWeight client for Unsplash"
 
   # This description is used to generate tags and improve search results.
@@ -89,6 +89,5 @@ LightWeight client for Unsplash.com
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Unswash/**/*.{h, swift, xib}"
-  s.public_header_files = 'Unswash/Unswash.h'
+  s.source_files  = "Unswash/**/*.{swift, xib, h}"
 end
