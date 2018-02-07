@@ -89,6 +89,6 @@ LightWeight client for Unsplash.com
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Unswash/**/*"
+  s.source_files  = "Unswash/**/*.{h, swift, xib}"
   s.public_header_files = 'Unswash/Unswash.h'
 end
