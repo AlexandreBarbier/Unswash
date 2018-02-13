@@ -137,8 +137,9 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let url = dataSource[indexPath.row].urls!.regular
-        completion?(imageList[url]!, url)
+        if let url = dataSource[indexPath.row].urls?.regular, let imageUrl = imageList[url] {
+            completion?(imageUrl, url)
+        }
         dismiss(animated: true, completion: nil)
     }
 
