@@ -36,23 +36,23 @@ class Photo: Codable {
         var results: [Photo]?
     }
 
-    func getURLForQuality(quality: UnswashImageQuality) -> String {
-        var url = ""
+    func getURLForQuality(quality: UnswashImageQuality) -> String? {
+        var url: String? = nil
         switch quality {
         case .full:
-            url = self.urls!.full
+            url = self.urls?.full
             break
         case .raw:
-            url = self.urls!.raw
+            url = self.urls?.raw
             break
         case .regular:
-            url = self.urls!.regular
+            url = self.urls?.regular
             break
         case .small:
-            url = self.urls!.small
+            url = self.urls?.small
             break
         case .thumb:
-            url = self.urls!.thumb
+            url = self.urls?.thumb
             break
         }
         return url

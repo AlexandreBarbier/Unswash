@@ -98,7 +98,6 @@ extension UnswashPhotoViewController: UISearchBarDelegate {
         dataSource = []
         requestPhotos()
     }
-
 }
 
 extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -160,23 +159,23 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
         cell.authorButton.setTitle(photo.user!.name, for: .normal)
         cell.index =  indexPath.row
         cell.delegate = self
-        if cell.dataTask != nil {
-            cell.dataTask.cancel()
-        }
-        if imageList[url] == nil {
-            let request = URLRequest(url: URL(string: url)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
+        cell.dataTask?.cancel()
+
+        if url != nil && imageList[url!] == nil {
+            let request = URLRequest(url: URL(string: url!)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
             cell.dataTask = photoDownloader.dataTask(with: request) { (data, response, error) in
                 guard  let data = data, let img = UIImage(data: data) else {
                     return
                 }
-                self.imageList.updateValue(img, forKey: url)
+                self.imageList.updateValue(img, forKey: url!)
                 DispatchQueue.main.async {
                     cell.imageView.image = img
                 }
             }
             cell.dataTask.resume()
+            cell.imageView.image = imageList[url!]
         }
-        cell.imageView.image = imageList[url]
+
         return cell
     }
 }
