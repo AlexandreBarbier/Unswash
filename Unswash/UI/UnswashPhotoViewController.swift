@@ -159,22 +159,24 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
         cell.index =  indexPath.row
         cell.delegate = self
         cell.dataTask?.cancel()
-
-        if let url = photo.getURLForQuality(quality: imageQuality), imageList[url] == nil {
-            let request = URLRequest(url: URL(string: url)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
-            cell.dataTask = photoDownloader.dataTask(with: request) { (data, response, error) in
-                guard  let data = data, let img = UIImage(data: data) else {
-                    return
+        if let url = photo.getURLForQuality(quality: imageQuality) {
+            if imageList[url] == nil {
+                let request = URLRequest(url: URL(string: url)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
+                cell.dataTask = photoDownloader.dataTask(with: request) { (data, response, error) in
+                    guard  let data = data, let img = UIImage(data: data) else {
+                        return
+                    }
+                    self.imageList.updateValue(img, forKey: url)
+                    DispatchQueue.main.async {
+                        cell.imageView.image = img
+                    }
                 }
-                self.imageList.updateValue(img, forKey: url)
-                DispatchQueue.main.async {
-                    cell.imageView.image = img
-                }
+                cell.dataTask.resume()
+                cell.imageView.image = imageList[url]
+            } else {
+                cell.imageView.image = imageList[url]
             }
-            cell.dataTask.resume()
-            cell.imageView.image = imageList[url]
         }
-
         return cell
     }
 }
