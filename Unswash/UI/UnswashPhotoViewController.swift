@@ -35,6 +35,11 @@ open class UnswashPhotoViewController: UIViewController {
                                 forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
         requestPhotos()
     }
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        get {
+            return .default
+        }
+    }
 
     private func requestPhotos() {
         let currentPage = Int(dataSource.count / 20) + 1
@@ -138,8 +143,8 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let url = dataSource[indexPath.row].urls?.regular, let imageUrl = imageList[url] {
             completion?(imageUrl, url)
+            dismiss(animated: true, completion: nil)
         }
-        dismiss(animated: true, completion: nil)
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
