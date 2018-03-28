@@ -49,8 +49,9 @@ open class UnswashPhotoViewController: UIViewController {
                 guard errors == nil else {
                     return
                 }
-                self.dataSource.append(contentsOf: photos)
+
                 DispatchQueue.main.async {
+                    self.dataSource.append(contentsOf: photos)
                     self.collectionView.reloadData()
                     self.isFetching = false
                 }
@@ -61,8 +62,9 @@ open class UnswashPhotoViewController: UIViewController {
                 guard errors == nil else {
                     return
                 }
-                self.dataSource.append(contentsOf:photos)
+
                 DispatchQueue.main.async {
+                    self.dataSource.append(contentsOf:photos)
                     self.collectionView.reloadData()
                     self.isFetching = false
                 }
