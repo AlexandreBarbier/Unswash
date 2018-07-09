@@ -21,7 +21,7 @@ open class UnswashPhotoViewController: UIViewController {
     var imageList: [String : UIImage] = [:]
     private var isFetching = false
     private var completion:((UIImage, String?) -> Void)?
-    private var imageQuality: UnswashImageQuality = .regular
+    private var imageQuality: UnswashImageQuality = .small
 
 
     override open func viewDidLoad() {
@@ -49,7 +49,6 @@ open class UnswashPhotoViewController: UIViewController {
                 guard errors == nil else {
                     return
                 }
-
                 DispatchQueue.main.async {
                     self.dataSource.append(contentsOf: photos)
                     self.collectionView.reloadData()
@@ -73,6 +72,7 @@ open class UnswashPhotoViewController: UIViewController {
     }
 
     override open func didReceiveMemoryWarning() {
+        imageList.removeAll()
         super.didReceiveMemoryWarning()
     }
 
@@ -143,7 +143,7 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = dataSource[indexPath.row].urls?.regular, let imageUrl = imageList[url] {
+        if let url = dataSource[indexPath.row].getURLForQuality(quality: imageQuality), let imageUrl = imageList[url] {
             completion?(imageUrl, url)
             dismiss(animated: true, completion: nil)
         }
@@ -159,28 +159,38 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
 
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier,
-                                                      for: indexPath) as! ImageCollectionViewCell
-        let photo = self.dataSource[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier,
+                                                            for: indexPath) as? ImageCollectionViewCell
+            else {
+                return UICollectionViewCell()
+        }
+        let photo = dataSource[indexPath.row]
         cell.authorButton.setTitle(photo.user?.name ?? "", for: .normal)
-        cell.index =  indexPath.row
+        cell.index = indexPath.row
         cell.delegate = self
         cell.dataTask?.cancel()
         if let url = photo.getURLForQuality(quality: imageQuality) {
+            cell.startAnimation()
             if imageList[url] == nil {
                 let request = URLRequest(url: URL(string: url)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
+                cell.imageView.image = nil
+
                 cell.dataTask = photoDownloader.dataTask(with: request) { (data, response, error) in
-                    guard  let data = data, let img = UIImage(data: data) else {
-                        return
-                    }
-                    self.imageList.updateValue(img, forKey: url)
                     DispatchQueue.main.async {
+                        guard
+                            let data = data,
+                            let img = UIImage(data: data) else {
+                            return
+                        }
+                        self.imageList.updateValue(img, forKey: url)
+                        cell.stopAnimation()
                         cell.imageView.image = img
                     }
                 }
                 cell.dataTask.resume()
-                cell.imageView.image = imageList[url]
+
             } else {
+                cell.stopAnimation()
                 cell.imageView.image = imageList[url]
             }
         }
