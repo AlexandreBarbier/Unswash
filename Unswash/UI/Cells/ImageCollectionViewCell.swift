@@ -18,24 +18,36 @@ class ImageCollectionViewCell: UICollectionViewCell {
     var delegate: ImageCollectionViewCellDelegate?
     var index = 0
     var gl : CAGradientLayer = {
-        $0.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
-        $0.startPoint = CGPoint(x: 0.0, y: 0.0)
-        $0.endPoint = CGPoint(x: 1.0, y: 0.0)
+        $0.colors = [UIColor.lightGray.cgColor, UIColor.lightGray.withAlphaComponent(0.7).cgColor, UIColor.white.cgColor]
+        $0.startPoint = CGPoint(x: 0.0, y: 0.2)
+        $0.endPoint = CGPoint(x: 0.2, y: 0.2)
         return $0
     }(CAGradientLayer())
 
-    let animation : CABasicAnimation = {
-        $0.fromValue = [UIColor.white.cgColor, UIColor.black.cgColor]
-        $0.toValue = [UIColor.black.cgColor, UIColor.white.cgColor]
-        $0.duration = 3.00
-
+    let animationEnd : CABasicAnimation = {
+        $0.fromValue = CGPoint(x: 0, y: 0.0)
+        $0.toValue = CGPoint(x: 1.2, y: 0.0)
+        $0.duration = 2.4
         $0.isRemovedOnCompletion = true
         $0.fillMode = kCAFilterLinear
-        $0.repeatCount = Float(INT_MAX)
         $0.autoreverses = true
-        $0.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        $0.repeatCount = MAXFLOAT
+        $0.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         return $0
-    }(CABasicAnimation(keyPath: "colors"))
+    }(CABasicAnimation(keyPath: "endPoint"))
+
+    let animationStart : CABasicAnimation = {
+        $0.fromValue = CGPoint(x: -0.2, y: 0.0)
+        $0.toValue = CGPoint(x: 1, y: 0.0)
+        $0.duration = 2.4
+        $0.isRemovedOnCompletion = true
+        $0.fillMode = kCAFilterLinear
+        $0.repeatCount = MAXFLOAT
+        $0.autoreverses = true
+        $0.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        return $0
+    }(CABasicAnimation(keyPath: "startPoint"))
+
 
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
@@ -46,12 +58,14 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        gl.add(animation, forKey: "animateGradient")
+        gl.add(animationStart, forKey: "animateGradientStart")
+        gl.add(animationEnd, forKey: "animateGradient")
     }
 
 
 
     func startAnimation() {
+        gl.removeFromSuperlayer()
         imageView.layer.insertSublayer(gl, at: 0)
     }
 

@@ -170,7 +170,7 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
         cell.delegate = self
         cell.dataTask?.cancel()
         if let url = photo.getURLForQuality(quality: imageQuality) {
-            cell.startAnimation()
+//            cell.startAnimation()
             if imageList[url] == nil {
                 let request = URLRequest(url: URL(string: url)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
                 cell.imageView.image = nil
@@ -183,14 +183,14 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
                             return
                         }
                         self.imageList.updateValue(img, forKey: url)
-                        cell.stopAnimation()
+//                        cell.stopAnimation()
                         cell.imageView.image = img
                     }
                 }
                 cell.dataTask.resume()
 
             } else {
-                cell.stopAnimation()
+//                cell.stopAnimation()
                 cell.imageView.image = imageList[url]
             }
         }
