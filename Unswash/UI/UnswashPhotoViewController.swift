@@ -159,8 +159,9 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
     
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier,
-                                                            for: indexPath) as? ImageCollectionViewCell
+        guard
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell,
+            indexPath.row < dataSource.count
             else {
                 return UICollectionViewCell()
         }
