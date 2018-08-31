@@ -17,7 +17,7 @@ open class Unswash: NSObject {
     
     public static let client = Unswash()
     var client_id: String!
-    var client_name: String!
+    var client_name: String = "unswash"
     private override init(){}
 
     open func configure(clientId: String, clientName: String) {

@@ -16,7 +16,7 @@ struct UserLinks: Codable {
 }
 
 class User: Codable {
-    var id: String!
+    var id: String?
     var username: String?
     var name: String?
     var bio: String?

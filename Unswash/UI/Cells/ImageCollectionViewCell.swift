@@ -14,10 +14,10 @@ protocol ImageCollectionViewCellDelegate {
 
 class ImageCollectionViewCell: UICollectionViewCell {
     static let identifier = "ImageCollectionViewCell"
-    var dataTask: URLSessionDataTask!
+    var dataTask: URLSessionDataTask?
     var delegate: ImageCollectionViewCellDelegate?
     var index = 0
-    var gl : CAGradientLayer = {
+    var gradientLayer : CAGradientLayer = {
         $0.colors = [UIColor.lightGray.cgColor, UIColor.lightGray.withAlphaComponent(0.7).cgColor, UIColor.white.cgColor]
         $0.startPoint = CGPoint(x: 0.0, y: 0.2)
         $0.endPoint = CGPoint(x: 0.2, y: 0.2)
@@ -58,24 +58,24 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        gl.add(animationStart, forKey: "animateGradientStart")
-        gl.add(animationEnd, forKey: "animateGradient")
+        gradientLayer.add(animationStart, forKey: "animateGradientStart")
+        gradientLayer.add(animationEnd, forKey: "animateGradient")
     }
 
 
 
     func startAnimation() {
-        gl.removeFromSuperlayer()
-        imageView.layer.insertSublayer(gl, at: 0)
+        gradientLayer.removeFromSuperlayer()
+        imageView.layer.insertSublayer(gradientLayer, at: 0)
     }
 
     func stopAnimation() {
-        gl.removeFromSuperlayer()
+        gradientLayer.removeFromSuperlayer()
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        gl.frame = imageView.bounds
+        gradientLayer.frame = imageView.bounds
     }
 
     override func prepareForReuse() {
