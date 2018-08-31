@@ -29,10 +29,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
         $0.toValue = CGPoint(x: 1.2, y: 0.0)
         $0.duration = 2.4
         $0.isRemovedOnCompletion = true
-        $0.fillMode = kCAFilterLinear
+        $0.fillMode = CAMediaTimingFillMode.both
         $0.autoreverses = true
         $0.repeatCount = MAXFLOAT
-        $0.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        $0.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         return $0
     }(CABasicAnimation(keyPath: "endPoint"))
 
@@ -41,10 +41,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
         $0.toValue = CGPoint(x: 1, y: 0.0)
         $0.duration = 2.4
         $0.isRemovedOnCompletion = true
-        $0.fillMode = kCAFilterLinear
+        $0.fillMode = CAMediaTimingFillMode.both
         $0.repeatCount = MAXFLOAT
         $0.autoreverses = true
-        $0.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        $0.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         return $0
     }(CABasicAnimation(keyPath: "startPoint"))
 
