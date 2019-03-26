@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "Unswash"
-  s.version      = "0.6.2"
+  s.version      = "0.6.3"
   s.summary      = "LightWeight client for Unsplash"
 
   # This description is used to generate tags and improve search results.
@@ -90,4 +90,5 @@ LightWeight client for Unsplash.com
   #
 
   s.source_files  = "Unswash/**/*.swift","Unswash/**/*.h", "Unswash/**/*.xib" 
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
 end
