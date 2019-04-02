@@ -18,32 +18,29 @@ class ImageCollectionViewCell: UICollectionViewCell {
     var delegate: ImageCollectionViewCellDelegate?
     var index = 0
     var gradientLayer : CAGradientLayer = {
-        $0.colors = [UIColor.lightGray.cgColor, UIColor.lightGray.withAlphaComponent(0.7).cgColor, UIColor.white.cgColor]
-        $0.startPoint = CGPoint(x: 0.0, y: 0.2)
-        $0.endPoint = CGPoint(x: 0.2, y: 0.2)
+        $0.colors = [UIColor.lightGray.withAlphaComponent(0.2).cgColor, UIColor.lightGray.withAlphaComponent(0.4).cgColor, UIColor.lightGray.withAlphaComponent(0.2).cgColor]
+        $0.startPoint = CGPoint(x: 0, y: 0)
+        $0.endPoint = CGPoint(x: 0.0, y: 0)
         return $0
     }(CAGradientLayer())
 
     let animationEnd : CABasicAnimation = {
-        $0.fromValue = CGPoint(x: 0, y: 0.0)
-        $0.toValue = CGPoint(x: 1.2, y: 0.0)
+        $0.fromValue = CGPoint(x: -0.5, y: 0.0)
+        $0.toValue = CGPoint(x: 1.1, y: 0.0)
         $0.duration = 2.4
-        $0.isRemovedOnCompletion = true
         $0.fillMode = CAMediaTimingFillMode.both
-        $0.autoreverses = true
         $0.repeatCount = MAXFLOAT
         $0.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         return $0
     }(CABasicAnimation(keyPath: "endPoint"))
 
     let animationStart : CABasicAnimation = {
-        $0.fromValue = CGPoint(x: -0.2, y: 0.0)
-        $0.toValue = CGPoint(x: 1, y: 0.0)
+
+        $0.fromValue = CGPoint(x: 0, y: 0.0)
+        $0.toValue = CGPoint(x: 1.6, y: 0.0)
         $0.duration = 2.4
-        $0.isRemovedOnCompletion = true
         $0.fillMode = CAMediaTimingFillMode.both
         $0.repeatCount = MAXFLOAT
-        $0.autoreverses = true
         $0.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         return $0
     }(CABasicAnimation(keyPath: "startPoint"))
@@ -60,9 +57,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         gradientLayer.add(animationStart, forKey: "animateGradientStart")
         gradientLayer.add(animationEnd, forKey: "animateGradient")
+        gradientLayer.frame = imageView.bounds
     }
-
-
 
     func startAnimation() {
         gradientLayer.removeFromSuperlayer()
@@ -70,15 +66,13 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
 
     func stopAnimation() {
-        gradientLayer.removeFromSuperlayer()
+        OperationQueue.main.addOperation {
+            self.gradientLayer.removeFromSuperlayer()
+        }
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        gradientLayer.frame = imageView.bounds
-    }
-
+    
     override func prepareForReuse() {
+        dataTask?.cancel()
         imageView.image = nil
     }
 }

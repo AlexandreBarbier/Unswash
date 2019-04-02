@@ -26,7 +26,11 @@ struct PhotoLinks:Codable {
     var download: String
 }
 
-class Photo: Codable {
+class Photo: Codable, Equatable {
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     var id: String?
     var urls: PhotoUrls?
     var links: PhotoLinks?

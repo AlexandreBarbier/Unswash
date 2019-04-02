@@ -10,13 +10,18 @@ import UIKit
 import SafariServices
 
 private let minSpace: CGFloat = 16
+private let pageSize: Int = 30
 
 open class UnswashPhotoViewController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var searchBar: UISearchBar!
     var photoDownloader : URLSession?
-    let phototDLQueue = OperationQueue()
+    let phototDLQueue:  OperationQueue = {
+        $0.name = "unswash.photoQueue"
+        $0.qualityOfService = .utility
+        return $0
+    }(OperationQueue())
     var dataSource: [Photo] = []
     var imageList: [String : UIImage] = [:]
     private var isFetching = false
@@ -27,15 +32,17 @@ open class UnswashPhotoViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         let config = URLSessionConfiguration.default
-
-        phototDLQueue.name = "unswash.photoQueue"
+        config.networkServiceType = .responsiveData
+        config.sharedContainerIdentifier = "photodownloader"
         photoDownloader = URLSession(configuration: config, delegate: nil, delegateQueue: phototDLQueue)
+
         collectionView.contentInset = UIEdgeInsets.init(top: 56, left: 0, bottom: 0, right: 0)
         collectionView.register(UINib(nibName: ImageCollectionViewCell.identifier,
                                       bundle: Bundle(for: ImageCollectionViewCell.self)),
                                 forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
         requestPhotos()
     }
+
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         get {
             return .default
@@ -43,30 +50,37 @@ open class UnswashPhotoViewController: UIViewController {
     }
 
     private func requestPhotos() {
-        let currentPage = Int(dataSource.count / 20) + 1
+        let currentPage = Int(dataSource.count / pageSize) + 1
         isFetching = true
         if let searchText = searchBar.text, searchText != "" {
-            Unswash.Photos.search(query: searchText, page: currentPage, per_page: 20, completion: { (photos, errors) in
+            Unswash.Photos.search(query: searchText,
+                                  page: currentPage,
+                                  per_page: pageSize,
+                                  completion: { (photos, errors) in
+
+                self.isFetching = false
                 guard errors == nil else {
                     return
                 }
                 DispatchQueue.main.async {
                     self.dataSource.append(contentsOf: photos)
+                    
                     self.collectionView.reloadData()
-                    self.isFetching = false
+
                 }
             })
         }
         else {
-            Unswash.Photos.get(page: currentPage, per_page: 20) { (photos, errors) in
+
+            Unswash.Photos.get(page: currentPage, per_page: pageSize) { (photos, errors) in
+                self.isFetching = false
                 guard errors == nil else {
                     return
                 }
 
                 DispatchQueue.main.async {
-                    self.dataSource.append(contentsOf:photos)
+                    self.dataSource.append(contentsOf: photos)
                     self.collectionView.reloadData()
-                    self.isFetching = false
                 }
             }
         }
@@ -108,6 +122,7 @@ extension UnswashPhotoViewController: UISearchBarDelegate {
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         dataSource = []
         requestPhotos()
+        searchBar.resignFirstResponder()
     }
 }
 
@@ -169,36 +184,42 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
             else {
                 return UICollectionViewCell()
         }
-
+        print(indexPath.row)
         let photo = dataSource[indexPath.row]
         cell.authorButton.setTitle(photo.user?.name ?? "", for: .normal)
         cell.index = indexPath.row
         cell.delegate = self
         cell.dataTask?.cancel()
-        if let url = photo.getURLForQuality(quality: imageQuality) {
-            if imageList[url] == nil {
-                if let realURL = URL(string: url) {
-                    let request = URLRequest(url: realURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5.0)
-                    cell.imageView.image = nil
+        cell.startAnimation()
+        if let url = photo.getURLForQuality(quality: imageQuality),
+            let realURL = URL(string: url) {
+            guard imageList[url] == nil else {
+                cell.stopAnimation()
+                cell.imageView.image = imageList[url]
+                return cell
+            }
+            let request = URLRequest(url: realURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 10.0)
+            cell.imageView.image = nil
 
-                    cell.dataTask = photoDownloader?.dataTask(with: request) { (data, response, error) in
-                        DispatchQueue.main.async {
-                            guard
-                                let data = data,
-                                let img = UIImage(data: data) else {
-                                    return
-                            }
-                            self.imageList.updateValue(img, forKey: url)
-                            cell.imageView.image = img
-                        }
-                    }
-                    cell.dataTask?.resume()
+            cell.dataTask = photoDownloader?.dataTask(with: request) { (data, response, error) in
+                guard
+                    let data = data,
+                    let img = UIImage(data: data) else {
+                        cell.stopAnimation()
+                        return
                 }
 
-            } else {
-                cell.imageView.image = imageList[url]
+                DispatchQueue.main.async {
+                    cell.stopAnimation()
+                    if let furl = response?.url {
+                        self.imageList.updateValue(img, forKey: furl.absoluteString)
+                    }
+                    cell.imageView.image = img
+                }
             }
+            cell.dataTask?.resume()
         }
+        cell.imageView.image = nil
         return cell
     }
 }

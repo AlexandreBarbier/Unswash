@@ -9,7 +9,11 @@
 import UIKit
 
 class Request: NSObject {
-    let requestQueue = OperationQueue()
+    let requestQueue : OperationQueue = {
+        $0.name = "unswash.queue"
+        $0.qualityOfService = .utility
+        return $0
+    }(OperationQueue())
     private static let _client = Request()
     let session: URLSession?
 
@@ -20,8 +24,9 @@ class Request: NSObject {
         guard let clientId = Unswash.client.client_id else {
             fatalError("You must set your unsplash app Id")
         }
-        requestQueue.name = "Request Queue"
+
         let config = URLSessionConfiguration.default
+        config.networkServiceType = .responsiveData
         config.httpAdditionalHeaders = ["Authorization" : "Client-ID \(clientId)"]
         session = URLSession(configuration: config, delegate: nil, delegateQueue: requestQueue)
     }
