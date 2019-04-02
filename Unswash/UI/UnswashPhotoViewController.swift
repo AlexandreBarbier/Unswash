@@ -184,7 +184,7 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
             else {
                 return UICollectionViewCell()
         }
-        print(indexPath.row)
+    
         let photo = dataSource[indexPath.row]
         cell.authorButton.setTitle(photo.user?.name ?? "", for: .normal)
         cell.index = indexPath.row

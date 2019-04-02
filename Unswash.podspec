@@ -90,4 +90,5 @@ LightWeight client for Unsplash.com
   #
 
   s.source_files  = "Unswash/**/*.swift","Unswash/**/*.h", "Unswash/**/*.xib" 
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
 end
