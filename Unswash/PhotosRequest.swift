@@ -30,7 +30,7 @@ extension Unswash {
                         completion([], k)
                     } catch {
                         if let dataString = String(data: data, encoding: .utf8) {
-                            let err = Errors()
+                            var err = Errors()
                             err.errors = [dataString]
                             completion([], err)
                         }
@@ -59,7 +59,7 @@ extension Unswash {
                         completion([], k)
                     } catch {
                         if let dataString = String(data: data, encoding: .utf8) {
-                            let err = Errors()
+                            var err = Errors()
                             err.errors = [dataString]
                             completion([], err)
                         }
@@ -79,7 +79,7 @@ extension Unswash {
                 }
                 let decoder = JSONDecoder()
 
-                do {
+                do { 
                     let k  = try decoder.decode(Photo.self, from: data)
                     if k.id == nil {
                         let err = try decoder.decode(Errors.self, from: data)
@@ -92,7 +92,7 @@ extension Unswash {
                         completion(nil, k)
                     } catch {
                         if let dataString = String(data: data, encoding: .utf8) {
-                            let err = Errors()
+                            var err = Errors()
                             err.errors = [dataString]
                             completion(nil, err)
                         }

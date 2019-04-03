@@ -16,17 +16,17 @@ open class UnswashPhotoViewController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var searchBar: UISearchBar!
-    var photoDownloader : URLSession?
-    let phototDLQueue:  OperationQueue = {
+    private var isFetching = false
+    private var completion:((UIImage, String?) -> Void)?
+    private var imageQuality: UnswashImageQuality = .full
+    private var photoDownloader : URLSession?
+    private var dataSource: [Photo] = []
+    private let photoDLQueue:  OperationQueue = {
         $0.name = "unswash.photoQueue"
         $0.qualityOfService = .utility
         return $0
     }(OperationQueue())
-    var dataSource: [Photo] = []
-    var imageList: [String : UIImage] = [:]
-    private var isFetching = false
-    private var completion:((UIImage, String?) -> Void)?
-    private var imageQuality: UnswashImageQuality = .small
+
 
 
     override open func viewDidLoad() {
@@ -34,7 +34,7 @@ open class UnswashPhotoViewController: UIViewController {
         let config = URLSessionConfiguration.default
         config.networkServiceType = .responsiveData
         config.sharedContainerIdentifier = "photodownloader"
-        photoDownloader = URLSession(configuration: config, delegate: nil, delegateQueue: phototDLQueue)
+        photoDownloader = URLSession(configuration: config, delegate: nil, delegateQueue: photoDLQueue)
 
         collectionView.contentInset = UIEdgeInsets.init(top: 56, left: 0, bottom: 0, right: 0)
         collectionView.register(UINib(nibName: ImageCollectionViewCell.identifier,
@@ -64,9 +64,11 @@ open class UnswashPhotoViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self.dataSource.append(contentsOf: photos)
-                    
-                    self.collectionView.reloadData()
-
+                    var indexes: [IndexPath] = []
+                    for i in self.dataSource.count - photos.count ..< self.dataSource.count {
+                        indexes.append(IndexPath(row: i, section: 0))
+                    }
+                    self.collectionView.insertItems(at: indexes)
                 }
             })
         }
@@ -80,14 +82,18 @@ open class UnswashPhotoViewController: UIViewController {
 
                 DispatchQueue.main.async {
                     self.dataSource.append(contentsOf: photos)
-                    self.collectionView.reloadData()
+                    var indexes: [IndexPath] = []
+                    for i in self.dataSource.count - photos.count ..< self.dataSource.count {
+                        indexes.append(IndexPath(row: i, section: 0))
+                    }
+                    self.collectionView.insertItems(at: indexes)
                 }
             }
         }
     }
 
     override open func didReceiveMemoryWarning() {
-        imageList.removeAll()
+        photoDownloader?.invalidateAndCancel()
         super.didReceiveMemoryWarning()
     }
 
@@ -120,7 +126,8 @@ open class UnswashPhotoViewController: UIViewController {
 
 extension UnswashPhotoViewController: UISearchBarDelegate {
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        dataSource = []
+        dataSource.removeAll()
+        collectionView.reloadData()
         requestPhotos()
         searchBar.resignFirstResponder()
     }
@@ -162,9 +169,22 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = dataSource[indexPath.row].getURLForQuality(quality: imageQuality), let imageUrl = imageList[url] {
-            completion?(imageUrl, url)
-            dismiss(animated: true, completion: nil)
+        if let url = dataSource[indexPath.row].getURLForQuality(quality: imageQuality){
+            let request = URLRequest(url: URL(string: url)!, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 10.0)
+            photoDownloader?.dataTask(with: request) { (data, response, error) in
+                guard
+                    let data = data,
+                    let img = UIImage(data: data) else {
+                        return
+                }
+
+                DispatchQueue.main.async {
+                    self.completion?(img, url)
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }.resume()
+
+
         }
     }
 
@@ -190,49 +210,48 @@ extension UnswashPhotoViewController : UICollectionViewDataSource, UICollectionV
         cell.index = indexPath.row
         cell.delegate = self
         cell.dataTask?.cancel()
+        cell.imageView.image = nil
         cell.startAnimation()
+
         if let url = photo.getURLForQuality(quality: imageQuality),
             let realURL = URL(string: url) {
-            guard imageList[url] == nil else {
-                cell.stopAnimation()
-                cell.imageView.image = imageList[url]
-                return cell
-            }
-            let request = URLRequest(url: realURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 10.0)
-            cell.imageView.image = nil
 
+            let request = URLRequest(url: realURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 10.0)
             cell.dataTask = photoDownloader?.dataTask(with: request) { (data, response, error) in
                 guard
                     let data = data,
                     let img = UIImage(data: data) else {
-                        cell.stopAnimation()
+                        DispatchQueue.main.async {
+                            cell.stopAnimation()
+                        }
                         return
                 }
 
                 DispatchQueue.main.async {
                     cell.stopAnimation()
-                    if let furl = response?.url {
-                        self.imageList.updateValue(img, forKey: furl.absoluteString)
-                    }
                     cell.imageView.image = img
                 }
             }
+
             cell.dataTask?.resume()
         }
-        cell.imageView.image = nil
+
         return cell
     }
 }
 
 extension UnswashPhotoViewController: ImageCollectionViewCellDelegate {
     func authorSelected(index: Int) {
-        if let user = dataSource[index].user, let html = user.links?.html {
-            var url = html
-            url += "?utm_source=\(Unswash.client.client_name)&utm_medium=referral&utm_campaign=api-credit"
-            if let realURL = URL(string: url) {
-                let sfvc = SFSafariViewController(url: realURL)
-                present(sfvc, animated: true, completion: nil)
-            }
+        guard
+            let user = dataSource[index].user,
+            let html = user.links?.html else {
+            return
+        }
+        var url = html
+        url += "?utm_source=\(Unswash.client.client_name)&utm_medium=referral&utm_campaign=api-credit"
+        if let realURL = URL(string: url) {
+            let sfvc = SFSafariViewController(url: realURL)
+            present(sfvc, animated: true, completion: nil)
         }
     }
 }

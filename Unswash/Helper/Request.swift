@@ -34,7 +34,9 @@ class Request: NSObject {
     class func GETRequest(path: String, params: [String: AnyObject]?, completion:@escaping (_ data: Data?)-> Void) {
         if let url = URL(string: "\(baseURL + path)") {
             let request = URLRequest(url: url)
-            _client.session?.dataTask(with: request) { (data, _, _) in completion(data) }.resume()
+            _client.session?.dataTask(with: request) { (data, response, error) in
+                completion(data)
+                }.resume()
         }
     }
 }

@@ -12,6 +12,6 @@ import UIKit
  "errors": ["Username is missing", "Password cannot be blank"]
  }
  */
-class Errors: Codable {
+struct Errors: Codable {
     var errors: [String]?
 }

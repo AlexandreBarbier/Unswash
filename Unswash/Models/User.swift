@@ -15,7 +15,7 @@ struct UserLinks: Codable {
     var portfolio : String?
 }
 
-class User: Codable {
+struct User: Codable {
     var id: String?
     var username: String?
     var name: String?
